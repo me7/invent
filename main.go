@@ -1,12 +1,25 @@
 package main
 
 import (
-	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 )
 
 type mainHandler struct{}
+
+var tpl *template.Template
+
+//must check for error
+func must(err error) {
+	if err != nil {
+		log.Fatalf("error: %s", err)
+	}
+}
+
+func init() {
+	tpl = template.Must(template.ParseGlob("template/*.tpl"))
+}
 
 func main() {
 	var mainHandler mainHandler
@@ -17,5 +30,5 @@ func main() {
 }
 
 func (h mainHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "you're come from %s", r.RemoteAddr)
+	must(tpl.ExecuteTemplate(w, "index.tpl", "hello gopher"))
 }
