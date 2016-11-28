@@ -1,0 +1,3 @@
+{{define "title"}}Index Page {{.Title}}{{end}}
+{{define "content"}}Hello Gopher {{.Content}}{{end}}
+{{define "footer"}}{{.Footer}}{{end}}

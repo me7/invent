@@ -4,11 +4,18 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 )
 
 type mainHandler struct{}
 
-var tpl *template.Template
+type page struct {
+	Title   int
+	Content string
+	Footer  string
+}
+
+var tpl = make(map[string]*template.Template)
 
 //must check for error
 func must(err error) {
@@ -18,7 +25,10 @@ func must(err error) {
 }
 
 func init() {
-	tpl = template.Must(template.ParseGlob("template/*.tpl"))
+	tpl["index"] = template.Must(template.ParseFiles("tpl/base", "tpl/index"))
+	tpl["index2"] = template.Must(template.ParseFiles("tpl/base", "tpl/index2"))
+	p1 := page{1, "custom content", "custom footer"}
+	tpl["index"].Execute(os.Stdout, p1)
 }
 
 func main() {
@@ -26,9 +36,9 @@ func main() {
 	m := http.NewServeMux()
 
 	m.Handle("/", mainHandler)
-	log.Fatal(http.ListenAndServe(":7749", m))
+	must(http.ListenAndServe(":7749", m))
 }
 
 func (h mainHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	must(tpl.ExecuteTemplate(w, "index.tpl", "hello gopher"))
+	// must(tpl.ExecuteTemplate(w, "index.tpl", "hello gopher"))
 }
