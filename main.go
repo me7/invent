@@ -27,7 +27,7 @@ func must(err error) {
 func init() {
 	tpl["index"] = template.Must(template.ParseFiles("tpl/base", "tpl/index"))
 	tpl["index2"] = template.Must(template.ParseFiles("tpl/base", "tpl/index2"))
-	p1 := page{1, "custom content", "custom footer"}
+	p1 := page{Title: 1, Content: "custom content"}
 	tpl["index"].Execute(os.Stdout, p1)
 }
 
