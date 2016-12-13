@@ -42,3 +42,7 @@ func main() {
 func (h mainHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// must(tpl.ExecuteTemplate(w, "index.tpl", "hello gopher"))
 }
+
+func add(x, y int) int {
+	return x + y
+}
